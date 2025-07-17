@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Login } from './components/Login';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { Dashboard } from './components/Dashboard';
@@ -11,8 +12,25 @@ import { Analytics } from './components/Analytics';
 type ActiveView = 'dashboard' | 'customers' | 'products' | 'orders' | 'suppliers' | 'analytics';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState('');
   const [activeView, setActiveView] = useState<ActiveView>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const handleLogin = (name: string) => {
+    setUserName(name);
+    setIsAuthenticated(true);
+  };
+
+  const handleSignOut = () => {
+    setIsAuthenticated(false);
+    setUserName('');
+    setActiveView('dashboard');
+  };
+
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -42,7 +60,11 @@ function App() {
         setIsOpen={setSidebarOpen}
       />
       <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
-        <Header toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <Header 
+          toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          userName={userName}
+          onSignOut={handleSignOut}
+        />
         <main className="p-6">
           {renderActiveView()}
         </main>
