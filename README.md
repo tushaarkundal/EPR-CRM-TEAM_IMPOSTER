@@ -1,4 +1,3 @@
-
 # Team Imposter - CRM ERP Inventory Management System
 
 A modern, responsive CRM, ERP, and Inventory Management system built with React, TypeScript, and Tailwind CSS.
